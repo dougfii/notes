@@ -1,5 +1,7 @@
 # 我的笔记
 
++ [Kubernets](docs/kubernetes/kubernetes.md)
+
 + [npm 常用命令](docs/npm.md)
 
 + [docker 私有仓库](docs/docker-private-registry.md)
