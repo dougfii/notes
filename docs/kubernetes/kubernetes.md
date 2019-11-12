@@ -9,6 +9,10 @@
 
 ![Pod生命周期](pod-lifecycle.png)
 
+> + Pod 能够具有多个容器，允许有一个或多个先于它启动的 Init 容器
+> + Init 容器总是运行到成功完成为止，每个 Init 容器都必须在下一个 Init 容器启动之前成功完成
+> + 如果 Init 容器失败，k8s 会不断重启该 Pod，直到 Init 容器成功为止，如果 Pod 的 restartPolicy 为 Never，则不会重新启动
+
 #### 控制器
 ##### ReplicaSet & Deployment (ReplicationController)
 * ReplicaSet：
@@ -56,6 +60,8 @@
 + kubectl --help // 帮助
 
 + kubectl explain pod // 查看 pod 模板用法
+
++ kubectl expose --help // 看 expose 帮助
 
 + kubectl log <pod name> -c <container name> // 查看 pod 中指定容器的日志
 

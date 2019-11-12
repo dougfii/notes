@@ -1,0 +1,63 @@
+apiVerion: v1
+kind: Service
+metadata:
+  name: myservice
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+    - protocol: TCP
+      port: 8080
+      name: tomcat
+      targetPort: 9377
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mydb
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9378
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+    version: v1
+spec:
+  containers:
+    - name: myapp-container
+      image: busybox
+      command:
+        - sh
+        - -c
+        - 'echo The app is running! && sleep 120'
+    - name: myapp-tomcat
+      image: tomcat
+      ports:
+        - containerPort: 8080
+          name: tomcat
+      command:
+        - sh
+        - -c
+        - 'echo The tomcat is running! && sleep 60'
+  initContainers:
+    - name: init-myservice
+      image: busybox
+      command:
+        - sh
+        - -c
+        - 'until nslookup myservice; do echo waiting for myservice; sleep2;'
+    - name: init-mydb
+      image: busybox
+      command:
+        - sh
+        - -c
+        - 'until nslookup mydb; do echo waiting for mydb; sleep2; done;'
